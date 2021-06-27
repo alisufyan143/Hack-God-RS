@@ -1,0 +1,270 @@
+####--------   Muhammad Ahmad   (Sp21-bcs-071)  --------------
+####--------   Muhammad Ali Sufyan  (Sp21-bcs-075)  ----------
+####---------------------------  ICT project  ------------------------------------
+####--------------------- GUI Scientific Calculator  ------------------
+
+
+from tkinter import *
+from tkinter.messagebox import * 
+
+def clear():
+    ex = screen.get()
+    ex = ex[0:len(ex) - 1]
+    screen.delete(0, END)
+    screen.insert(0, ex)
+
+
+def all_clear():
+    screen.delete(0, END)
+
+
+def click(event):
+    text = event.widget['text']
+    print(text)
+    
+
+    if text == "×":
+        screen.insert(END,"*")
+        return
+    
+    if text == "÷":
+        screen.insert(END,"/")
+        return
+
+    
+    if text == '=':
+        try:
+            ex = screen.get()
+            answer = eval(ex)
+            screen.delete(0, END)
+            screen.insert(0, answer)
+        except Exception as e:
+            print("Error...", e)
+            showerror("Error...", e)
+        return
+
+    screen.insert(END, text)
+
+
+
+root=Tk()
+root.title('Calculator')
+root.geometry("363x342")
+
+####---- Icon of Window 
+##icon=PhotoImage(file= "C:\\Users\\ahmed\\Pictures\\Saved Pictures\\cal1.png")
+##root.iconphoto(True,icon)
+root.configure(background="Black")
+
+
+font = ("comicsans 20 bold")
+font1="comicsansms 24 bold"
+
+
+## display screen
+
+screen=Entry(root,font=font,relief=SUNKEN,borderwidth=3,justify=RIGHT)
+screen.pack(side=TOP, pady=5,fill=X, padx=5)
+
+##   Frame-1
+
+f1=Frame(root,bg="black",relief=RAISED,borderwidth=2)
+f1.pack(side=TOP,anchor="nw",padx=4,pady=3)
+
+
+num =9
+for i in range(0,3):
+    for j in range(0,3):
+        button=Button(f1, text=str(num),font=font1,bg="black",fg="orange",width=3,padx=3,pady=2,relief=FLAT)
+        button.grid(row=i,column=j)
+        num-=1
+        button.bind("<Button-1>",click)
+
+
+zero_button=Button(f1, text="0",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+zero_button.grid(row=3,column=1)
+zero_button.bind("<Button-1>",click)
+
+dot_button=Button(f1, text=".",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+dot_button.grid(row=3,column=0)
+dot_button.bind("<Button-1>",click)
+
+equal_button=Button(f1, text="=",font=font1,fg="black",bg="orange",width=3,padx=2,pady=2,activebackground="pale violet red",relief=RAISED)
+equal_button.grid(row=3,column=2)
+equal_button.bind("<Button-1>",click)
+
+plus_button=Button(f1, text="+",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+plus_button.grid(row=0,column=3)
+plus_button.bind("<Button-1>",click)
+
+minus_button=Button(f1, text="-",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+minus_button.grid(row=1,column=3)
+minus_button.bind("<Button-1>",click)
+
+multiply_button=Button(f1, text="×",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+multiply_button.grid(row=2,column=3)
+multiply_button.bind("<Button-1>",click)
+
+divide_button=Button(f1, text="÷",font=font1,bg="black",fg="orange",width=3,padx=2,pady=2,relief=FLAT)
+divide_button.grid(row=3,column=3)
+divide_button.bind("<Button-1>",click)
+
+back_button=Button(f1, text="C",font=font1,bg="black",fg="orange",width=3,height=5,padx=2,pady=2,relief=FLAT,command=clear)
+back_button.grid(row=1,column=4,rowspan=5)
+
+clear_button=Button(f1, text="AC",font=font1,bg="black",fg="orange red",width=3,height=3,padx=2,pady=2,relief=FLAT,command=all_clear)
+clear_button.grid(row=0,column=4,rowspan=2)
+
+
+
+
+##--------------------------------------------------For Scientific--------------------------------------------------------
+
+
+
+import math as m
+
+
+normal_cal = True
+
+def calculations_sc(event):
+    text = event.widget['text']
+    print(text)
+    ab=screen.get()
+    anser=""
+    if text == 'x!':
+        anser=str(m.factorial(float(ab)))
+    elif text == "ln":
+        anser=str(m.log(float(ab)))
+    elif text == "sin":
+        anser=m.sin(m.radians(float(ab)))
+    elif text == "cos":
+        anser=m.cos(m.radians(float(ab)))
+    elif text == "tan":
+        anser=m.tan(m.radians(float(ab)))
+    elif text== "√":
+        anser=m.sqrt(float(ab))
+    elif text== "1/x":
+        anser=str(1/(float(ab)))
+    elif text== "log":
+        anser=str(m.log10(float(ab)))
+    elif text== "deg":
+        anser=str(m.degrees(float(ab)))
+    elif text== "rad":
+        anser=str(m.radians(float(ab)))
+    elif text== "asin":
+        anser=str(m.asin(float(ab)))
+    elif text== "acos":
+        anser=str(m.acos(float(ab)))
+    elif text== "atan":
+        anser=str(m.atan(float(ab)))
+    elif text== "π":
+        if ab=="":
+                anser=str(m.pi)
+        else:
+            anser=str(float(ab)*m.pi)
+            
+    elif text== "^":
+        base,powe=ab.split(",")
+        print(base)
+        print(powe)
+        anser=m.pow(float(base),float(powe))
+        
+    screen.delete(0,END)
+    screen.insert(0,anser)
+
+def sc_click():
+    global normal_cal
+    if normal_cal:
+        f1.pack_forget()
+        f2.pack(side=TOP,padx=4,pady=3)
+        f1.pack(side=TOP,pady=2)
+        root.geometry("363x555")
+        print("Scientific Calculator")
+        normal_cal=False
+    else:
+         print("Simple Calculator")
+         f2.pack_forget()
+         root.geometry("363x342")
+         normal_cal=True   
+
+
+
+
+menufont=("",8)
+menubar = Menu(root,font=menufont,bg="black",fg="white")
+mode = Menu(menubar,font=menufont,tearoff=0)
+mode.add_checkbutton(label="Scientific Calculator",command=sc_click)
+menubar.add_cascade(label="Mode",menu=mode)
+root.config(menu=menubar)
+
+
+##   Frame-2
+
+f2=Frame(root,bg="black",relief=RAISED,borderwidth=2)
+
+sqrt_button=Button(f2, text="^",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+sqrt_button.grid(row=0,column=0)
+sqrt_button.bind("<Button-1>",calculations_sc)
+
+underroot_button=Button(f2, text="√",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+underroot_button.grid(row=0,column=1)
+underroot_button.bind("<Button-1>",calculations_sc)
+
+natural_log_button=Button(f2, text="ln",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+natural_log_button.grid(row=0,column=2)
+natural_log_button.bind("<Button-1>",calculations_sc)
+
+factorial_button=Button(f2, text="x!",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+factorial_button.grid(row=0,column=3)
+factorial_button.bind("<Button-1>",calculations_sc)
+
+pie_button=Button(f2, text="π",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+pie_button.grid(row=0,column=4)
+pie_button.bind("<Button-1>",calculations_sc)
+
+
+sin_button=Button(f2, text="sin",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+sin_button.grid(row=1,column=0)
+sin_button.bind("<Button-1>",calculations_sc)
+
+cos_button=Button(f2, text="cos",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+cos_button.grid(row=1,column=1)
+cos_button.bind("<Button-1>",calculations_sc)
+
+tan_button=Button(f2, text="tan",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+tan_button.grid(row=1,column=2)
+tan_button.bind("<Button-1>",calculations_sc)
+
+inverse_button=Button(f2, text="1/x",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+inverse_button.grid(row=1,column=3)
+inverse_button.bind("<Button-1>",calculations_sc)
+
+log_button=Button(f2, text="log",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+log_button.grid(row=1,column=4)
+log_button.bind("<Button-1>",calculations_sc)
+
+deg_button=Button(f2, text="deg",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+deg_button.grid(row=2,column=0)
+deg_button.bind("<Button-1>",calculations_sc)
+
+rad_button=Button(f2, text="rad",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+rad_button.grid(row=2,column=1)
+rad_button.bind("<Button-1>",calculations_sc)
+
+asin_button=Button(f2, text="asin",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+asin_button.grid(row=2,column=2)
+asin_button.bind("<Button-1>",calculations_sc)
+
+acos_button=Button(f2, text="acos",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+acos_button.grid(row=2,column=3)
+acos_button.bind("<Button-1>",calculations_sc)
+
+atan_button=Button(f2, text="atan",font="comicsans 15 bold",bg="black",fg="orange",width=3,padx=13,pady=14,relief=FLAT)
+atan_button.grid(row=2,column=4)
+atan_button.bind("<Button-1>",calculations_sc)
+
+
+## anchor = n, ne, e, se, s, sw, w, nw, or center
+
+root.mainloop()
